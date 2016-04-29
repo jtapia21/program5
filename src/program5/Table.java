@@ -4,7 +4,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 public class Table {
-	final int COLUMN = 10, ROW = 20, SIDE = 28; 
+	public final static int COLUMN = 10;
+	public final static int ROW = 20;
+	public final static int SIDE = 28; 
 	String table[][];
 	SDD sdd;
 	int widthSDD, heightSDD;

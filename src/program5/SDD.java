@@ -19,7 +19,7 @@ public class SDD extends Canvas {
 		setSize(width, height);
 		table = new Table(this);
 		image = new Image(this);
-		piece = new Piece(this);
+		piece = new Piece(this, "T");
 		captureKey();
 		setFocusable(true);
 		
@@ -52,16 +52,25 @@ public class SDD extends Canvas {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-					piece.pos.moveRight();
+					if (piece.pos.nextStepWithinBounds(1, 0, piece.pieceType)) {
+						piece.pos.moveRight();
+					}
 					return;
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-					piece.pos.moveLeft();
+					if (piece.pos.nextStepWithinBounds(-1, 0, piece.pieceType))
+						piece.pos.moveLeft();
 					return;
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					piece.pos.moveDown();
+					if (piece.pos.nextStepWithinBounds(0, 1, piece.pieceType))
+						piece.pos.moveDown();
 					return;
+				}
+				//make sure we didn't move outside bounds
+				if (!piece.pos.isWithinBounds()) {
+					System.err.println("Error! moved piece outside of bounds...");
+					//TODO: piece.destroy()
 				}
 			}
 
