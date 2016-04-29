@@ -50,7 +50,7 @@ public class Duo {
 	
 	//basic bounds checking
 	public boolean isWithinBounds() {
-		if (X < 1 || X >= Table.COLUMN || Y < 1 || Y >= Table.ROW) {
+		if (X < 0 || X >= Table.COLUMN || Y < 0 || Y >= Table.ROW) {
 			return false;
 		}
 		return true;

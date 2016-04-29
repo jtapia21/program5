@@ -58,20 +58,11 @@ public class SDD extends Canvas {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-					if (activePiece.pos.nextStepWithinBounds(1, 0, activePiece.pieceType)) {
-						activePiece.pos.moveRight();
-					}
-					return;
-				}
-				else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-					if (activePiece.pos.nextStepWithinBounds(-1, 0, activePiece.pieceType))
-						activePiece.pos.moveLeft();
-					return;
-				}
-				else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					if (activePiece.pos.nextStepWithinBounds(0, 1, activePiece.pieceType))
-						activePiece.pos.moveDown();
-					return;
+					activePiece.moveRight();
+				} else if(e.getKeyCode() == KeyEvent.VK_LEFT){
+					activePiece.moveLeft();
+				} else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+					activePiece.moveDown();
 				} else if (e.getKeyCode() == KeyEvent.VK_J) {//debug to retire piece manually
 					nextPiece();
 				}

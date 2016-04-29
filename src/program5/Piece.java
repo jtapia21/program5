@@ -54,4 +54,28 @@ public class Piece {
 		}
 		return true;
 	}
+	//move commands return true if the move succeeded, or false if otherwise
+	//TODO: Have the pieces make sure they aren't intersecting any other pieces here before they move.
+	//TODO: also have these move commands update a Main.timeOfLastMove with System.nanowhatever so we can have pieces float and only lock in after they've not moved for a second
+	public boolean moveRight() {
+		if (this.pos.nextStepWithinBounds(1, 0, this.pieceType)) {
+			this.pos.moveRight();
+			return true;//move success
+		}
+		return false;
+	}
+	public boolean moveLeft() {
+		if (this.pos.nextStepWithinBounds(-1, 0, this.pieceType)) {
+			this.pos.moveLeft();
+			return true;//move success
+		}
+		return false;
+	}
+	public boolean moveDown() {
+		if (this.pos.nextStepWithinBounds(0, 1, this.pieceType)) {
+			this.pos.moveDown();
+			return true;//move success
+		}
+		return false;
+	}
 }//End of Piece class

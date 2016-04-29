@@ -41,6 +41,7 @@ public class Main {
 		//Time reference 
 		long  timeRef = System.nanoTime();
 		long timeCount = System.nanoTime();
+		long lastSecond = System.nanoTime();//use this one to calculate time since the last second passed, so we can trigger gravity
 		
 		double delta = 0;
 		double time;
