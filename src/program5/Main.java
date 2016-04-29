@@ -8,6 +8,7 @@ public class Main {
 	private static int APS = 0;
 	private static int FPS = 0;
 	public static Random gen = new Random();
+	public static int tickSpeed = 1000;//lower this to increase gravity rate, piece lock rate.
 	
 	public static void main(String[] args){
 		game();
@@ -41,7 +42,7 @@ public class Main {
 		//Time reference 
 		long  timeRef = System.nanoTime();
 		long timeCount = System.nanoTime();
-		long lastSecond = System.nanoTime();//use this one to calculate time since the last second passed, so we can trigger gravity
+		long lastTick = System.currentTimeMillis();//use this one to calculate time since the last second passed, so we can trigger gravity
 		
 		double delta = 0;
 		double time;
@@ -58,6 +59,14 @@ public class Main {
 			}//End of inner while loop
 			
 			draw();
+			
+			if (System.currentTimeMillis() - tickSpeed > lastTick) {
+				//one game tick has passed! Trigger tick sensitive events, such as gravity!
+				//TODO: modify Piece move functions to check and see if collisions occur
+				lastTick = System.currentTimeMillis();
+				
+				sdd.gravityTick();
+			}
 			
 			if(System.nanoTime() - timeCount > actualized) {
 				//System.out.println("APS = " + APS + " FPS = " + FPS);

@@ -15,6 +15,7 @@ public class SDD extends Canvas {
 	Table table;
 	ArrayList<Piece> pieces = new ArrayList<Piece>(10);
 	Piece activePiece;
+	long lastMove = System.currentTimeMillis();//this keeps track of the last successful move, which keeps the piece alive and unlocked until you stop moving it
 	
 	public SDD(int width, int height){
 		//this.setPreferredSize(new Dimension(width, height));
@@ -58,11 +59,17 @@ public class SDD extends Canvas {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-					activePiece.moveRight();
+					if (activePiece.moveRight()) {
+						lastMove = System.currentTimeMillis();
+					}
 				} else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-					activePiece.moveLeft();
+					if (activePiece.moveLeft()) {
+						lastMove = System.currentTimeMillis();
+					}
 				} else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					activePiece.moveDown();
+					if (activePiece.moveDown()) {
+						lastMove = System.currentTimeMillis();
+					}
 				} else if (e.getKeyCode() == KeyEvent.VK_J) {//debug to retire piece manually
 					nextPiece();
 				}
@@ -91,6 +98,17 @@ public class SDD extends Canvas {
 	}
 	public void setActivePiece(Piece activePiece) {
 		this.activePiece = activePiece;
+	}
+	
+	public void gravityTick() {
+		for (Piece p : pieces) {
+			p.moveDown();
+		}
+		if (!activePiece.moveDown()) {//we couldn't move the activePiece down due to gravity, it must be directly on top of something
+			if (System.currentTimeMillis() - Main.tickSpeed > lastMove) {//if the last move was more than 1 tick ago, then:
+				nextPiece();//lock the latest piece, spawn a new one
+			}
+		}
 	}
 	
 	//This method generates the next piece to at the top of the board, and retires the old one.

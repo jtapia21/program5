@@ -26,6 +26,7 @@ public class Piece {
 	}//End of Piece method
 	
 	public void draw(Graphics g) {
+		//set color
 		if (pieceType.equals("I"))
 			g.setColor(new Color(255, 0, 0));//red
 		else if (pieceType.equals("T"))
@@ -42,6 +43,8 @@ public class Piece {
 			g.setColor(new Color(0, 255, 0));//green
 		else 
 			g.setColor(new Color(255, 255, 255));
+		
+		//draw the individual parts of the tetrimino
 		for(int i = 0; i < 4; i++){
 			image.drawStuff(new Duo(pos.X + myTetrimino.stuff[i].X , pos.Y + myTetrimino.stuff[i].Y), g);
 		}//End for loop 
