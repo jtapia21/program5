@@ -1,7 +1,6 @@
 package program5;
 
 import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
