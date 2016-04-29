@@ -1,5 +1,6 @@
 package program5;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Piece {
@@ -25,8 +26,22 @@ public class Piece {
 	}//End of Piece method
 	
 	public void draw(Graphics g) {
-		//Need to add the other pieces here and make them appear at random.
-		//Most likely need a random generator function and call it here.
+		if (pieceType.equals("I"))
+			g.setColor(new Color(255, 0, 0));//red
+		else if (pieceType.equals("T"))
+			g.setColor(new Color(80, 80, 80));//grey
+		else if (pieceType.equals("O"))
+			g.setColor(new Color(148, 228, 255));//cyan
+		else if (pieceType.equals("L"))
+			g.setColor(new Color(255, 255, 0));//yellow
+		else if (pieceType.equals("J"))
+			g.setColor(new Color(255, 0, 255));//pink
+		else if (pieceType.equals("S"))
+			g.setColor(new Color(0, 0, 255));//blue
+		else if (pieceType.equals("Z"))
+			g.setColor(new Color(0, 255, 0));//green
+		else 
+			g.setColor(new Color(255, 255, 255));
 		for(int i = 0; i < 4; i++){
 			image.drawStuff(new Duo(pos.X + myTetrimino.stuff[i].X , pos.Y + myTetrimino.stuff[i].Y), g);
 		}//End for loop 
@@ -34,7 +49,7 @@ public class Piece {
 	}//End of draw method
 	
 	private boolean isValidPieceType(String type) {
-		if (!type.equals("Z")&&!type.equals("S")&&!type.equals("T")&&!type.equals("L")&&!type.equals("J")&&!type.equals("I")) {
+		if (!type.equals("Z")&&!type.equals("S")&&!type.equals("T")&&!type.equals("L")&&!type.equals("J")&&!type.equals("I")&&!type.equals("O")) {
 			return false;
 		}
 		return true;

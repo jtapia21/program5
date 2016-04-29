@@ -50,13 +50,19 @@ public class Duo {
 	
 	//basic bounds checking
 	public boolean isWithinBounds() {
-		if (X < 2 || X > Table.COLUMN || Y < 2 || Y > Table.ROW) {
+		if (X < 1 || X >= Table.COLUMN || Y < 1 || Y >= Table.ROW) {
 			return false;
 		}
 		return true;
 	}
 	//checks if the specified next step is valid
 	public boolean nextStepWithinBounds(int x, int y, String pieceType) {
+		if (pieceType.equals("O")) {//pieceType O needs special handling, needs to go more left than most pieces
+			if (X+x < 0 || X+x >= Table.COLUMN -1 || Y+y < 1 || Y+y >= Table.ROW) {
+				return false;
+			}
+			return true;
+		}
 		if (X+x < 1 || X+x >= Table.COLUMN -1 || Y+y < 1 || Y+y >= Table.ROW) {
 			return false;
 		}
