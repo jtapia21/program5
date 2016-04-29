@@ -38,6 +38,7 @@ public class SDD extends Canvas {
 		
 		g = buffer.getDrawGraphics(); //Initialized graphics
 		
+		g.clearRect(0, 0, (int)(Table.COLUMN * Table.SIDE + table.pos.X), (int)(Table.ROW * Table.SIDE + table.pos.Y));
 		/*Draw what we need here*/
 		table.draw(g);
 		for (Piece p : pieces) {
