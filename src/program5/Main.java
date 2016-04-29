@@ -1,10 +1,13 @@
 package program5;
 
+import java.util.Random;
+
 public class Main {
 	private static SDD sdd;
 	private static window Window;
 	private static int APS = 0;
 	private static int FPS = 0;
+	public static Random gen = new Random();
 	
 	public static void main(String[] args){
 		game();

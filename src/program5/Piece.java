@@ -1,14 +1,12 @@
 package program5;
 
 import java.awt.Graphics;
-import java.util.Random;
 
 public class Piece {
 	SDD sdd;
 	Table table;
 	Image image;
-	Random gen = new Random();
-	Duo pos = new Duo(gen.nextInt(Table.COLUMN-1),1);
+	Duo pos = new Duo(1+Main.gen.nextInt(Table.COLUMN-2),1);
 	String pieceType;
 	Tetrimino myTetrimino = Tetrimino.consult("Z");
 	
@@ -20,6 +18,7 @@ public class Piece {
 		this.pieceType = pieceType;
 		if (!isValidPieceType(pieceType)) {
 			myTetrimino = Tetrimino.consult("Z");//default to Z type if no type specified
+			pieceType = "Z";
 		} else {
 			myTetrimino = Tetrimino.consult(pieceType);
 		}

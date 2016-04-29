@@ -2,6 +2,7 @@ package program5;
 
 public class Tetrimino {
 	Duo stuff[];
+	static String[] types = {"Z","S","J","L","T","O","I"};
 	String name;
 	public Tetrimino(Duo stuff0, Duo stuff1, Duo stuff2, Duo stuff3,
 						String name){
@@ -47,4 +48,11 @@ public class Tetrimino {
 		return new Tetrimino(new Duo(0,0), new Duo(0,0), 
 								new Duo(0,0),new Duo(0,0), "");
 	}//End of consult
+	
+	public static String getTetriminoType(int index) {
+		if (index < 0 || index > 6) {
+			return null;
+		}
+		return types[index];
+	}
 }//End of Tetrimino class

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class SDD extends Canvas {
 
@@ -12,14 +13,15 @@ public class SDD extends Canvas {
 	private Graphics g;
 	Image image;
 	Table table;
-	Piece piece;
+	ArrayList<Piece> pieces = new ArrayList<Piece>(10);
+	Piece activePiece;
 	
 	public SDD(int width, int height){
 		//this.setPreferredSize(new Dimension(width, height));
 		setSize(width, height);
 		table = new Table(this);
 		image = new Image(this);
-		piece = new Piece(this, "T");
+		activePiece = new Piece(this, Tetrimino.getTetriminoType(Main.gen.nextInt(6)));
 		captureKey();
 		setFocusable(true);
 		
@@ -38,7 +40,10 @@ public class SDD extends Canvas {
 		
 		/*Draw what we need here*/
 		table.draw(g);
-		piece.draw(g);
+		for (Piece p : pieces) {
+			p.draw(g);
+		}
+		activePiece.draw(g);
 		
 		g.dispose(); //Doesn't fill ram with unnecessary stuff.
 		buffer.show();//Show what buffer has
@@ -52,24 +57,26 @@ public class SDD extends Canvas {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-					if (piece.pos.nextStepWithinBounds(1, 0, piece.pieceType)) {
-						piece.pos.moveRight();
+					if (activePiece.pos.nextStepWithinBounds(1, 0, activePiece.pieceType)) {
+						activePiece.pos.moveRight();
 					}
 					return;
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-					if (piece.pos.nextStepWithinBounds(-1, 0, piece.pieceType))
-						piece.pos.moveLeft();
+					if (activePiece.pos.nextStepWithinBounds(-1, 0, activePiece.pieceType))
+						activePiece.pos.moveLeft();
 					return;
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					if (piece.pos.nextStepWithinBounds(0, 1, piece.pieceType))
-						piece.pos.moveDown();
+					if (activePiece.pos.nextStepWithinBounds(0, 1, activePiece.pieceType))
+						activePiece.pos.moveDown();
 					return;
+				} else if (e.getKeyCode() == KeyEvent.VK_J) {//debug to retire piece manually
+					nextPiece();
 				}
 				//make sure we didn't move outside bounds
-				if (!piece.pos.isWithinBounds()) {
-					System.err.println("Error! moved piece outside of bounds...");
+				if (!activePiece.pos.isWithinBounds()) {
+					System.err.println("DEBUG! moved piece outside of bounds...");
 					//TODO: piece.destroy()
 				}
 			}
@@ -86,4 +93,17 @@ public class SDD extends Canvas {
 			}
 		});//End of addKeyListener
 	}//End of captureKey method
+
+	public Piece getActivePiece() {
+		return activePiece;
+	}
+	public void setActivePiece(Piece activePiece) {
+		this.activePiece = activePiece;
+	}
+	
+	//This method generates the next piece to at the top of the board, and retires the old one.
+	public void nextPiece() {
+		pieces.add(activePiece);
+		activePiece = new Piece(this, Tetrimino.getTetriminoType(Main.gen.nextInt(6)));
+	}
 }// End of SDD method
