@@ -17,7 +17,7 @@ public class Tetrimino {
 		
 	}//End of Tetrimino method
 	
-	public static Tetrimino consult(String name){
+	public static Tetrimino consult(String name, Piece parent){
 		
 		//Create names and shapes
 		switch(name) {

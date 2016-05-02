@@ -9,6 +9,9 @@ public class Main {
 	private static int FPS = 0;
 	public static Random gen = new Random();
 	public static int tickSpeed = 1000;//lower this to increase gravity rate, piece lock rate.
+	private static long lastTick = System.currentTimeMillis();//use this one to calculate time since the last ticktime passed, so we can trigger a game tick
+	public static int gameScore = 0;
+	public static int linesFilled = 0;
 	
 	public static void main(String[] args){
 		game();
@@ -29,6 +32,14 @@ public class Main {
 		FPS++;
 	}//End of draw method
 	
+	public static void tick() {
+		//one game tick has passed! Trigger tick sensitive events, such as gravity!
+		lastTick = System.currentTimeMillis();
+		
+		sdd.gravityTick();//trigger gravity/lock-in impulse
+		sdd.scoreTick();//trigger scoring of filled lines
+	}//end of tick method
+	
 	public static void createWindow(int width, int height, String name) {
 		sdd = new SDD(width, height);
 		Window = new window(name, sdd);
@@ -42,7 +53,6 @@ public class Main {
 		//Time reference 
 		long  timeRef = System.nanoTime();
 		long timeCount = System.nanoTime();
-		long lastTick = System.currentTimeMillis();//use this one to calculate time since the last second passed, so we can trigger gravity
 		
 		double delta = 0;
 		double time;
@@ -61,11 +71,7 @@ public class Main {
 			draw();
 			
 			if (System.currentTimeMillis() - tickSpeed > lastTick) {
-				//one game tick has passed! Trigger tick sensitive events, such as gravity!
-				//TODO: modify Piece move functions to check and see if collisions occur
-				lastTick = System.currentTimeMillis();
-				
-				sdd.gravityTick();
+				tick();
 			}
 			
 			if(System.nanoTime() - timeCount > actualized) {
