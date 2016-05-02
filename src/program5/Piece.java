@@ -7,7 +7,7 @@ public class Piece {
 	SDD sdd;
 	Table table;
 	Image image;
-	Duo pos = new Duo(1+Main.gen.nextInt(Table.COLUMN-2),1);
+	Duo pos = new Duo(1+Main.gen.nextInt(Table.COLUMN-3),1);
 	String pieceType;
 	Tetrimino myTetrimino;
 	
@@ -58,14 +58,16 @@ public class Piece {
 		return true;
 	}
 	//move commands return true if the move succeeded, or false if otherwise
-	//TODO: Have the pieces make sure they aren't intersecting any other pieces here before they move.
-	//TODO: also have these move commands update a Main.timeOfLastMove with System.nanowhatever so we can have pieces float and only lock in after they've not moved for a second
 	public boolean moveRight() {
 		if (this.pos.nextStepWithinBounds(1, 0, this.pieceType)) {
 			//the space we're moving into is within bounds, but will we collide with another piece? lets find out:
 			for (int i = 0; i < 4; i++) {//check each one of our Tetrimino blocks
-				if (sdd.getOccupiedLocations()[(int)(this.myTetrimino.stuff[i].getX()+this.pos.getX()+1)][(int)(this.myTetrimino.stuff[i].getY()+this.pos.getY())+0] != null) {
-					//we found a collision, abort move
+				try {
+					if (sdd.getOccupiedLocations()[(int)(this.myTetrimino.stuff[i].getX()+this.pos.getX()+1)][(int)(this.myTetrimino.stuff[i].getY()+this.pos.getY())+0] != null) {
+						//we found a collision, abort move
+						return false;
+					}
+				} catch (ArrayIndexOutOfBoundsException e) {
 					return false;
 				}
 			}
@@ -78,8 +80,12 @@ public class Piece {
 		if (this.pos.nextStepWithinBounds(-1, 0, this.pieceType)) {
 			//the space we're moving into is within bounds, but will we collide with another piece? lets find out:
 			for (int i = 0; i < 4; i++) {//check each one of our Tetrimino blocks
-				if (sdd.getOccupiedLocations()[(int)(this.myTetrimino.stuff[i].getX()+this.pos.getX()-1)][(int)(this.myTetrimino.stuff[i].getY()+this.pos.getY())+0] != null) {
-					//we found a collision, abort move
+				try {
+					if (sdd.getOccupiedLocations()[(int)(this.myTetrimino.stuff[i].getX()+this.pos.getX()-1)][(int)(this.myTetrimino.stuff[i].getY()+this.pos.getY())+0] != null) {
+						//we found a collision, abort move
+						return false;
+					}
+				} catch (ArrayIndexOutOfBoundsException e) {
 					return false;
 				}
 			}

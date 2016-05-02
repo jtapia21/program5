@@ -57,6 +57,12 @@ public class Duo {
 	}
 	//checks if the specified next step is valid
 	public boolean nextStepWithinBounds(int x, int y, String pieceType) {
+		if (pieceType.equals("I")) {//pieceType I needs special handling, needs to go more right than most pieces
+			if (X+x < 0 || X+x >= Table.COLUMN -1 || Y+y < 1 || Y+y >= Table.ROW) {
+				return false;
+			}
+			return true;
+		}
 		if (pieceType.equals("O")) {//pieceType O needs special handling, needs to go more left than most pieces
 			if (X+x < 0 || X+x >= Table.COLUMN -1 || Y+y < 1 || Y+y >= Table.ROW) {
 				return false;

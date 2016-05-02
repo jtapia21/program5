@@ -8,6 +8,8 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.management.relation.RelationServiceNotRegisteredException;
+
 @SuppressWarnings("serial")
 public class SDD extends Canvas {
 
@@ -27,7 +29,7 @@ public class SDD extends Canvas {
 		setSize(width, height);
 		table = new Table(this);
 		image = new Image(this);
-		activePiece = new Piece(this, Tetrimino.getTetriminoType(Main.gen.nextInt(6)));
+		activePiece = new Piece(this, Tetrimino.getTetriminoType(Main.gen.nextInt(6)));//first piece can be anything but I
 		captureKey();
 		setFocusable(true);
 		
@@ -107,13 +109,20 @@ public class SDD extends Canvas {
 	
 	//move pieces according to gravity and lock in the activePiece/spawn a new one if necessary
 	public void gravityTick() {
+		boolean resetCollisionMap = false;
 		for (Piece p : pieces) {
-			p.moveDown();
+			if (p.moveDown()) {
+				//one of the non-active pieces moved, probably because a line cleared or something
+				resetCollisionMap = true;//so we have to regen the occupiedLocations map to account for a moved locked piece
+			}
 		}
 		if (!activePiece.moveDown()) {//we couldn't move the activePiece down due to gravity, it must be directly on top of something
 			if (System.currentTimeMillis() - Main.tickSpeed > lastMove) {//if the last move was more than 1 tick ago, then:
 				nextPiece();//lock the latest piece, spawn a new one
 			}
+		}
+		if (resetCollisionMap) {
+			rebuildOccupiedLocations();
 		}
 	}
 	//calculate score and clear lines if necessary
@@ -162,13 +171,14 @@ public class SDD extends Canvas {
 			Main.gameScore += 40 * (int)(Main.linesFilled/10);
 			break;
 		}
+		rebuildOccupiedLocations();
 	}
 	
 	//This method generates the next piece to at the top of the board, and retires the old one.
 	public void nextPiece() {
 		pieces.add(activePiece);
 		consumeToOccupiedLocations(activePiece);
-		activePiece = new Piece(this, Tetrimino.getTetriminoType(Main.gen.nextInt(6)));
+		activePiece = new Piece(this, Tetrimino.getTetriminoType(Main.gen.nextInt(7)));
 	}
 
 	private void consumeToOccupiedLocations(Piece p) {
@@ -180,6 +190,13 @@ public class SDD extends Canvas {
 		for (int i = 0; i < 4; i++)
 			occupiedLocations[(int)(p.getPosition().getX()+t.stuff[i].getX())][(int)(p.getPosition().getY()+t.stuff[i].getY())] = p;
 		//now we've added the block locations to our collision check grid, and they won't ever move because the pieces are already locked in at this point
+	}
+	
+	private void rebuildOccupiedLocations() {
+		occupiedLocations = new Piece[Table.COLUMN][Table.ROW];
+		for (Piece p : pieces) {
+			consumeToOccupiedLocations(p);
+		}
 	}
 	
 	public Piece[][] getOccupiedLocations() {

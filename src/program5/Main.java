@@ -38,6 +38,7 @@ public class Main {
 		
 		sdd.gravityTick();//trigger gravity/lock-in impulse
 		sdd.scoreTick();//trigger scoring of filled lines
+		tickSpeed = (50 - (linesFilled * 2) / 60)+1000;
 	}//end of tick method
 	
 	public static void createWindow(int width, int height, String name) {
