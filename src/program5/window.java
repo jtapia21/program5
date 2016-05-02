@@ -9,8 +9,10 @@ import javax.swing.JFrame;
  */
 
 public class window extends JFrame{
+	static window singleton = null;
 	
 	public window(String name, SDD sdd){
+		if (singleton == null) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle(name);
 		
@@ -20,6 +22,11 @@ public class window extends JFrame{
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		
+		singleton = this;
+		} else {
+		  singleton = this;
+		}
 		
 	}// End of window
 }// End of window method.
